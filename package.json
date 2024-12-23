@@ -1,0 +1,24 @@
+{
+  "name": "langgraph-agent",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@langchain/community": "^0.3.19",
+    "@langchain/core": "^0.3.26",
+    "@langchain/langgraph": "^0.2.34",
+    "@langchain/openai": "^0.3.16",
+    "langsmith": "^0.2.13",
+    "luxon": "^3.5.0",
+    "openai": "^4.77.0",
+    "solana-agent-kit": "^1.1.0",
+    "tsx": "^4.19.2"
+  }
+}
