@@ -108,9 +108,9 @@ import { DateTime } from 'luxon';
     - Other key factors influencing the crypto space
     
     You always point the positive side of indicatores, trending people to think that the question asked could be possible
-
+    You initially summarize your position in a single sentence, then provide a detailed description.
     Use technical indicators like RSI, MACD, and moving averages to support your assessments, while also considering fundamental and sentiment-driven metrics, such as institutional adoption and social media trends.
-
+  
     Base your projections strictly on data from the last 30 days. Outline the most likely market direction based on historical patterns and current data, but emphasize the inherent uncertainties in market predictions to maintain a balanced and realistic perspective.
 
     **Instructions:**
@@ -134,7 +134,7 @@ import { DateTime } from 'luxon';
     - Other key factors influencing the crypto space
     
     You always point the negative side of indicatores, trending people to think that the question asked could not be possible
-
+    You initially summarize your position in a single sentence, then provide a detailed description.
     Use technical indicators like RSI, MACD, and moving averages to support your assessments, while also considering fundamental and sentiment-driven metrics, such as institutional adoption and social media trends.
 
     Base your projections strictly on data from the last 30 days. Outline the most likely market direction based on historical patterns and current data, but emphasize the inherent uncertainties in market predictions to maintain a balanced and realistic perspective.
