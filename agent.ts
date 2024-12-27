@@ -2,13 +2,28 @@
 
 // IMPORTANT - Add your API keys here. Be careful not to publish them.
 process.env.OPENAI_API_KEY = "xxxx";
-process.env.TAVILY_API_KEY = "xxxx";
+process.env.TAVILY_API_KEY = "xxxxx";
 
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage } from "@langchain/core/messages";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { StateGraph, MessagesAnnotation } from "@langchain/langgraph";
+
+//
+// Capture multiple arguments from the command line
+const args = process.argv.slice(2); // All arguments passed after the script name
+
+if (args.length < 1) {
+  console.error("Please provide at least one question as an argument.");
+  process.exit(1);
+}
+
+const question = args[0];  // The first input is the question
+const additionalParam = args[1] || "default";  // An optional second argument if needed
+
+console.log("Question:", question);
+console.log("Additional Parameter:", additionalParam);
 
 // Define the ResearchState interface
 type ResearchState = {
@@ -61,7 +76,7 @@ const workflow = new StateGraph(MessagesAnnotation)
   .addEdge("tools", "agent")
   .addConditionalEdges("agent", shouldContinue);
 //
-const question = " Answer that Question: Will $ETH hit new ATH before 2025?"
+//const question = " Answer that Question: Will $ETH hit new ATH before 2025?"
 import { DateTime } from 'luxon';
 // Invoke the model to analyze cryptocurrency trends and decide on market direction
 
@@ -79,7 +94,7 @@ import { DateTime } from 'luxon';
     - Other key factors influencing the crypto space
     
     You always point the positive side of indicatores, trending people to think that the question asked could be possible
-
+    You initially summarize your position in a single sentence, then provide a detailed description.
     Use technical indicators like RSI, MACD, and moving averages to support your assessments, while also considering fundamental and sentiment-driven metrics, such as institutional adoption and social media trends.
 
     Base your projections strictly on data from the last 30 days. Outline the most likely market direction based on historical patterns and current data, but emphasize the inherent uncertainties in market predictions to maintain a balanced and realistic perspective.
@@ -105,7 +120,7 @@ import { DateTime } from 'luxon';
     - Other key factors influencing the crypto space
     
     You always point the negative side of indicatores, trending people to think that the question asked could not be possible
-
+    You initially summarize your position in a single sentence, then provide a detailed description.
     Use technical indicators like RSI, MACD, and moving averages to support your assessments, while also considering fundamental and sentiment-driven metrics, such as institutional adoption and social media trends.
 
     Base your projections strictly on data from the last 30 days. Outline the most likely market direction based on historical patterns and current data, but emphasize the inherent uncertainties in market predictions to maintain a balanced and realistic perspective.
