@@ -17,6 +17,7 @@
     "@langchain/openai": "^0.3.16",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "langsmith": "^0.2.13",
     "luxon": "^3.5.0",
