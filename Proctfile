@@ -1,1 +1,0 @@
-web: npx tsx agent.ts $ARG1 $ARG2
