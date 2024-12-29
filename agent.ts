@@ -1,8 +1,10 @@
 // agent.ts
 
 // IMPORTANT - Add your API keys here. Be careful not to publish them.
+
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const tavilyApiKey = process.env.TAVILY_API_KEY;
+
 
 
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
