@@ -1,32 +1,49 @@
-import express, { Request, Response } from 'express';
+// server.ts
+
+import express from 'express';
+import cors from 'cors';
 import { exec } from 'child_process';
+import path from 'path';
 
 const app = express();
-const port = 3000;
 
-// Middleware para permitir JSON no corpo da requisição
-app.use(express.json());
+// Configuração do CORS para permitir apenas 'api.triadfi.co'
+const corsOptions = {
+  origin: 'https://api.triadfi.co',
+  methods: ['GET', 'POST'],
+};
 
-app.get('/execute', (req: Request, res: Response) => {
-  const { arg1, arg2 } = req.query;
+app.use(cors(corsOptions));
 
-  // Validação dos parâmetros
-  if (!arg1 || !arg2) {
-    return res.status(400).json({ error: 'Args necessarys' });
+// Defina o endpoint para receber a requisição
+app.post('/run-agent', express.json(), (req, res) => {
+  const { question, additionalParam } = req.body;
+
+  // Validação básica dos parâmetros
+  if (!question) {
+    return res.status(400).json({ error: 'Question is required' });
   }
 
-  // Comando para rodar o script TypeScript
-  const command = `npx tsx agent.ts ${arg1} ${arg2}`;
+  // Montar o comando que executa seu arquivo agent.ts com os parâmetros fornecidos
+  const command = `npx tsx ${path.join(__dirname, 'agent.ts')} ${question} ${additionalParam || 'default'}`;
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
-      return res.status(500).json({ error: stderr || 'Error' });
+      console.error(`exec error: ${error}`);
+      return res.status(500).json({ error: 'Failed to execute the agent script' });
     }
-    res.json({ output: stdout.trim() });
+    if (stderr) {
+      console.error(`stderr: ${stderr}`);
+      return res.status(500).json({ error: 'Error occurred while executing the script' });
+    }
+
+    // Enviar a resposta da execução do script
+    res.json({ result: stdout });
   });
 });
 
-// Inicia o servidor
-app.listen(port, () => {
-  console.log(`server running http://localhost:${port}`);
+// Defina a porta do servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
