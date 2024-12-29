@@ -76,7 +76,7 @@ app.post('/ask', async (req, res) => {
   console.log("Question:", question);
   console.log("Additional Parameter:", additionalParam);
 
-  const PromptAgent = `
+const PromptAgent = `
     Today's date is ${DateTime.now().toFormat('dd/MM/yyyy')}.
     You are **Agent Triad**, an analytical agent trained to provide balanced insights into the prediction market with a focus on cryptocurrency trends.
     Always start your responses with two perspectives:
@@ -94,6 +94,7 @@ app.post('/ask', async (req, res) => {
     - Regulatory developments
     - Other key factors influencing the crypto space
 
+    **Important:** Always ensure high accuracy when reporting the price data.
     Always provide a balanced perspective based on factual data.
     **Priority Instruction:** Use the 'tavily_search' tool to gather the ${additionalParam} price on ${DateTime.now().toFormat('dd/MM/yyyy')}
     **Instructions:** Use the 'tavily_search' tool to gather recent cryptocurrency market data in the current time. Focus on collecting insights based on the criteria outlined above.
@@ -104,7 +105,6 @@ app.post('/ask', async (req, res) => {
 
     Question: ${question}
 `;
-
 
   //  Agent
   const finalStateHype = await workflow.compile().invoke({
