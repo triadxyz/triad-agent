@@ -16,7 +16,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Defina o endpoint para receber a requisição
-app.post('/run-agent', express.json(), (req, res) => {
+
+app.post('/ask', express.json(), (req, res) => {
+
   const { question, additionalParam } = req.body;
 
   // Validação básica dos parâmetros
@@ -25,7 +27,9 @@ app.post('/run-agent', express.json(), (req, res) => {
   }
 
   // Montar o comando que executa seu arquivo agent.ts com os parâmetros fornecidos
-  const command = `npx tsx ${path.join(__dirname, 'agent.ts')} ${question} ${additionalParam || 'default'}`;
+
+  const command = `npx tsx ${path.join(__dirname, 'agent.ts')} "${question}" "${additionalParam || 'default'}"`;
+
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
