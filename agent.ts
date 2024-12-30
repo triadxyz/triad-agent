@@ -79,7 +79,7 @@ app.post('/ask', async (req, res) => {
 const PromptAgent = `
     Today's date is ${DateTime.now().toFormat('dd/MM/yyyy')}.
     You are **Agent Triad**, an analytical agent trained to provide balanced insights into the prediction market with a focus on cryptocurrency trends.
-    Always start your responses with two perspectives:
+    Always start your responses with two perspectives as if the agents are discussing the topic with each other:
 
     1. **Agent Hype:** Summarize the positive factors contributing to a favorable outcome for the question.
     2. **Agent Flop:** Summarize the negative factors contributing to an unfavorable outcome for the question.
@@ -105,6 +105,7 @@ const PromptAgent = `
 
     Question: ${question}
 `;
+
 
   //  Agent
   const finalStateHype = await workflow.compile().invoke({
