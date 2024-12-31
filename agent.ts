@@ -1,10 +1,3 @@
-// agent.ts
-//2010
-// IMPORTANT - Add your API keys here. Be careful not to publish them.
-const openaiApiKey = process.env.OPENAI_API_KEY;
-const tavilyApiKey = process.env.TAVILY_API_KEY;
-
-
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage } from "@langchain/core/messages";
@@ -14,9 +7,13 @@ import express from 'express';
 import cors from 'cors';
 import { DateTime } from 'luxon';
 
+const openaiApiKey = process.env.OPENAI_API_KEY;
+const tavilyApiKey = process.env.TAVILY_API_KEY;
+
 const app = express();
+
 app.use(cors({
-  origin: 'https://api.triadfi.co/' // Restrict access to this domain
+  origin: 'https://api.triadfi.co/'
 }));
 
 app.use(express.json());
@@ -108,18 +105,11 @@ const PromptAgent = `
     Question: ${question}
 `;
 
-
-
-  //  Agent
   const finalStateHype = await workflow.compile().invoke({
     messages: [new HumanMessage(PromptAgent)],
   });
 
   console.log("Response:", finalStateHype.messages[finalStateHype.messages.length - 1].content);
-
- 
-
- 
 
   res.json({
     hypeResponse: finalStateHype.messages[finalStateHype.messages.length - 1].content,
