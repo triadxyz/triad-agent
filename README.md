@@ -1,1 +1,1 @@
-# triad-agent
+# Triad Agent
