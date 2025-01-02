@@ -79,7 +79,7 @@ Submit a question for market analysis.
 
 ```json
 {
-  "hypeResponse": "Detailed market analysis with dual perspectives..."
+  "response": "Detailed market analysis with dual perspectives..."
 }
 ```
 
