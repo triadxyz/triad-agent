@@ -3,7 +3,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage } from "@langchain/core/messages";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { StateGraph, MessagesAnnotation } from "@langchain/langgraph";
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import { DateTime } from "luxon";
 
@@ -19,18 +19,6 @@ app.use(
 );
 
 app.use(express.json());
-
-type ResearchState = {
-  company: string;
-  company_keywords: string;
-  exclude_keywords: string;
-  report: string;
-  documents: Record<string, Record<string | number, string | number>>;
-  RAG_docs: Record<string, Record<string | number, string | number>>;
-  messages: Array<any>;
-};
-
-const llm = new ChatOpenAI();
 
 const tools = [new TavilySearchResults({ maxResults: 3 })];
 const toolNode = new ToolNode(tools);
@@ -57,12 +45,12 @@ async function callModel(state: typeof MessagesAnnotation.State) {
 
 const workflow = new StateGraph(MessagesAnnotation)
   .addNode("agent", callModel)
-  .addEdge("__start__", "agent") // __start__ is a special name for the entrypoint
+  .addEdge("__start__", "agent")
   .addNode("tools", toolNode)
   .addEdge("tools", "agent")
   .addConditionalEdges("agent", shouldContinue);
 
-app.post("/ask", async (req, res) => {
+app.post("/ask", async (req: Request, res: Response) => {
   const { question, additionalParam = "default" } = req.body;
 
   if (!question) {
