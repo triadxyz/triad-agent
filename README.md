@@ -60,12 +60,6 @@ npm run build
 npm run start
 ```
 
-### Running the Server
-
-```bash
-npm run start
-```
-
 ## API Documentation
 
 ### POST /ask
