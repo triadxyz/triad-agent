@@ -35,7 +35,7 @@ Triad Agent is an AI-powered analytical tool designed to provide balanced insigh
 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/triad-agent.git
+git clone git@github.com:triadxyz/triad-agent.git
 cd triad-agent
 ```
 
