@@ -6,7 +6,12 @@ import { StateGraph, MessagesAnnotation } from "@langchain/langgraph";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { DateTime } from "luxon";
-
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const tavilyApiKey = process.env.TAVILY_API_KEY;
 
@@ -39,7 +44,9 @@ function shouldContinue({ messages }: typeof MessagesAnnotation.State) {
 }
 
 async function callModel(state: typeof MessagesAnnotation.State) {
+  console.log("Model Input State:", state);
   const response = await model.invoke(state.messages);
+  console.log("Model Response:", response);
   return { messages: [response] };
 }
 
@@ -50,65 +57,60 @@ const workflow = new StateGraph(MessagesAnnotation)
   .addEdge("tools", "agent")
   .addConditionalEdges("agent", shouldContinue);
 
-app.post("/ask", async (req: Request, res: Response) => {
-  const { question, additionalParam = "default" } = req.body;
+// Load prompt dynamically for the specified agent
+function loadPrompt(agent: string, question: string, additionalParam: string, date: string) {
+  const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt`);
+  console.log("Loading Prompt from:", agentFilePath);
 
-  if (!question) {
-    return res.status(400).send({ error: "Question is required" });
+  if (!fs.existsSync(agentFilePath)) {
+    throw new Error(`Agent configuration file not found: ${agentFilePath}`);
   }
 
-  console.log("Question:", question);
-  console.log("Additional Parameter:", additionalParam);
+  const agentPromptTemplate = fs.readFileSync(agentFilePath, "utf-8");
+  console.log("Loaded Prompt Template:", agentPromptTemplate);
 
-  const PromptAgent = `
-    Today's date is ${DateTime.now().toFormat("dd/MM/yyyy")}.
-    You are **Agent Triad**, an analytical agent trained to provide balanced insights into the prediction market with a focus on cryptocurrency trends.
-    Always start your responses with two perspectives as if the agents are discussing the topic with each other:
+  return agentPromptTemplate
+    .replace(/{{DATE}}/g, date)
+    .replace(/{{QUESTION}}/g, question)
+    .replace(/{{ADDITIONAL_PARAM}}/g, additionalParam);
+}
 
-    1. **Agent Hype:** Summarize the positive factors contributing to a favorable outcome for the question.
-       - after, mock **Agent Flop** by saying something like: "Don't listen to Agent Flop, they have no idea what they're talking about!"
-    2. **Agent Flop:** Summarize the negative factors contributing to an unfavorable outcome for the question.
-       - after, mock **Agent Hype** by saying something like: "Ignore Agent Hype, they're overly optimistic and out of touch with reality!"
+app.post("/ask", async (req: Request, res: Response) => {
+  const { question, additionalParam = "default", agent } = req.body;
 
-    Focus on relevant market data from the past week, including:
-    - Adoption rates
-    - Pay attention to the accuracy of the price on the date: ${DateTime.now().toFormat(
-      "dd/MM/yyyy"
-    )}
-    - Focus on last 1 - 3 days events 
-    - Trading volumes over the last week
-    - Price action
-    - Inflow and outflow trends in ETFs
-    - Regulatory developments
-    - Other key factors influencing the crypto space
+  if (!question || !agent) {
+    console.log("Validation Error: Missing question or agent");
+    return res.status(400).send({ error: "Question and Agent are required" });
+  }
 
-    **Important:** Always ensure high accuracy when reporting the price data.
-    Always provide a balanced perspective based on factual data.
-    **Priority Instruction:** Use the 'tavily_search' tool to gather the ${additionalParam} price on ${DateTime.now().toFormat(
-    "dd/MM/yyyy"
-  )}
-    **Instructions:** Use the 'tavily_search' tool to gather recent cryptocurrency market data in the current time. Focus on collecting insights based on the criteria outlined above.
-    Summarize the answer to the following question in two sentences:
+  try {
+    const currentDate = DateTime.now().toFormat("dd/MM/yyyy");
 
-    - **Agent Hype:** Positive outlook summary.
-    - **Agent Flop:** Negative outlook summary.
+    console.log("Question:", question);
+    console.log("Additional Parameter:", additionalParam);
+    console.log("Agent:", agent);
+    console.log("Date:", currentDate);
 
-    Question: ${question}
-`;
+    const prompt = loadPrompt(agent, question, additionalParam, currentDate);
+    console.log("Final Prompt Sent to Model:", prompt);
 
-  const finalStateHype = await workflow.compile().invoke({
-    messages: [new HumanMessage(PromptAgent)],
-  });
+    const finalState = await workflow.compile().invoke({
+      messages: [new HumanMessage(prompt)],
+    });
 
-  console.log(
-    "Response:",
-    finalStateHype.messages[finalStateHype.messages.length - 1].content
-  );
+    console.log(
+      "Response:",
+      finalState.messages[finalState.messages.length - 1].content
+    );
 
-  res.json({
-    response:
-      finalStateHype.messages[finalStateHype.messages.length - 1].content,
-  });
+    res.json({
+      response:
+        finalState.messages[finalState.messages.length - 1].content,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 });
 
 const port = process.env.PORT || 8080;
