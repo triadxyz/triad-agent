@@ -41,7 +41,9 @@ function shouldContinue({ messages }: typeof MessagesAnnotation.State) {
 }
 
 async function callModel(state: typeof MessagesAnnotation.State) {
+  console.log("Model Input State:", state);
   const response = await model.invoke(state.messages);
+  console.log("Model Response:", response);
   return { messages: [response] };
 }
 
@@ -55,12 +57,14 @@ const workflow = new StateGraph(MessagesAnnotation)
 // Load prompt dynamically for the specified agent
 function loadPrompt(agent: string, question: string, additionalParam: string, date: string) {
   const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt`);
+  console.log("Loading Prompt from:", agentFilePath);
 
   if (!fs.existsSync(agentFilePath)) {
     throw new Error(`Agent configuration file not found: ${agentFilePath}`);
   }
 
   const agentPromptTemplate = fs.readFileSync(agentFilePath, "utf-8");
+  console.log("Loaded Prompt Template:", agentPromptTemplate);
 
   return agentPromptTemplate
     .replace(/{{DATE}}/g, date)
@@ -72,6 +76,7 @@ app.post("/ask", async (req: Request, res: Response) => {
   const { question, additionalParam = "default", agent } = req.body;
 
   if (!question || !agent) {
+    console.log("Validation Error: Missing question or agent");
     return res.status(400).send({ error: "Question and Agent are required" });
   }
 
@@ -84,6 +89,7 @@ app.post("/ask", async (req: Request, res: Response) => {
     console.log("Date:", currentDate);
 
     const prompt = loadPrompt(agent, question, additionalParam, currentDate);
+    console.log("Final Prompt Sent to Model:", prompt);
 
     const finalState = await workflow.compile().invoke({
       messages: [new HumanMessage(prompt)],
