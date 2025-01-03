@@ -8,7 +8,10 @@ import cors from "cors";
 import { DateTime } from "luxon";
 import fs from "fs";
 import path from "path";
-
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const tavilyApiKey = process.env.TAVILY_API_KEY;
 
