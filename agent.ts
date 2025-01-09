@@ -193,7 +193,7 @@ app.post("/ask", async (req: Request, res: Response) => {
       response:
         finalState.messages[finalState.messages.length - 1].content,
       Actual_price:
-        formattedPrice,
+       currentPrices[0]?.formattedPrice,
     });
 
   } catch (error) {
