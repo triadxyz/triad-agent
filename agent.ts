@@ -68,7 +68,7 @@ function formatPrice(priceData: { price: string, expo: number }) {
 }
 
 function loadPrompt(agent: string, question: string, date: string, market: string | null = null, ticker: string | null = null, currentPrices: any = null) {
-  const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt`);
+  const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt");
   console.log("Loading Prompt from:", agentFilePath);
 
   if (!fs.existsSync(agentFilePath)) {
@@ -174,7 +174,7 @@ app.post("/ask", async (req: Request, res: Response) => {
 
     const hypeMatch = rawResponse.match(/\*\*Agent Hype:\*\*([\s\S]*?)(?=\n\n|\n$)/);
     const flopMatch = rawResponse.match(/\*\*Agent Flop:\*\*([\s\S]*?)(?=\n\n|\n$)/);
-    const summaryMatch = rawResponse.match(/\*\*Summary:\*\*([\s\S]*?)(?=\n\n|\n$)/);
+    const summaryMatch = rawResponse.match(/\*\*Summary:\*\*([\s\S]*?)(?=$)/);
 
     const formattedResponse = {
       hype: hypeMatch ? hypeMatch[1].trim() : "",
