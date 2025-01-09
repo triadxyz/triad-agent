@@ -58,7 +58,7 @@ const workflow = new StateGraph(MessagesAnnotation)
   .addConditionalEdges("agent", shouldContinue);
 
 // Load prompt dynamically for the specified agent
-function loadPrompt(agent: string, question: string, additionalParam: string, date: string) {
+function loadPrompt(agent: string, question: string, date: string) {
   const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt`);
   console.log("Loading Prompt from:", agentFilePath);
 
@@ -71,12 +71,11 @@ function loadPrompt(agent: string, question: string, additionalParam: string, da
 
   return agentPromptTemplate
     .replace(/{{DATE}}/g, date)
-    .replace(/{{QUESTION}}/g, question)
-    .replace(/{{ADDITIONAL_PARAM}}/g, additionalParam);
+    .replace(/{{QUESTION}}/g, question);
 }
 
 app.post("/ask", async (req: Request, res: Response) => {
-  const { question, additionalParam = "default", agent } = req.body;
+  const { question, agent } = req.body;
 
   if (!question || !agent) {
     console.log("Validation Error: Missing question or agent");
@@ -87,11 +86,10 @@ app.post("/ask", async (req: Request, res: Response) => {
     const currentDate = DateTime.now().toFormat("dd/MM/yyyy");
 
     console.log("Question:", question);
-    console.log("Additional Parameter:", additionalParam);
     console.log("Agent:", agent);
     console.log("Date:", currentDate);
 
-    const prompt = loadPrompt(agent, question, additionalParam, currentDate);
+    const prompt = loadPrompt(agent, question, currentDate);
     console.log("Final Prompt Sent to Model:", prompt);
 
     const finalState = await workflow.compile().invoke({
