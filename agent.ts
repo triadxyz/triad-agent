@@ -192,6 +192,8 @@ app.post("/ask", async (req: Request, res: Response) => {
     res.json({
       response:
         finalState.messages[finalState.messages.length - 1].content,
+      Actual_price:
+        formattedPrice,
     });
 
   } catch (error) {
