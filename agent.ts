@@ -68,7 +68,7 @@ function formatPrice(priceData: { price: string, expo: number }) {
 }
 
 function loadPrompt(agent: string, question: string, date: string, market: string | null = null, ticker: string | null = null, currentPrices: any = null) {
-  const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt");
+  const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt`);
   console.log("Loading Prompt from:", agentFilePath);
 
   if (!fs.existsSync(agentFilePath)) {
