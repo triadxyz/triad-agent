@@ -172,14 +172,18 @@ app.post("/ask", async (req: Request, res: Response) => {
     const rawResponse = finalState.messages[finalState.messages.length - 1].content;
     console.log("Raw Response:", rawResponse);
 
+    // Extração de dados com expressões regulares
     const hypeMatch = rawResponse.match(/\*\*Agent Hype:\*\*([\s\S]*?)(?=\n\n|\n$)/);
     const flopMatch = rawResponse.match(/\*\*Agent Flop:\*\*([\s\S]*?)(?=\n\n|\n$)/);
-    const summaryMatch = rawResponse.match(/\*\*Summary:\*\*([\s\S]*?)/);
+    const summaryMatch = rawResponse.match(/\*\*Summary:\*\*([\s\S]*)/);
 
+    console.log("Extracted Summary Match:", summaryMatch); // Log para depuração
+
+    // Formatação do conteúdo extraído
     const formattedResponse = {
-      hype: hypeMatch ? hypeMatch[1].trim() : "",
-      flop: flopMatch ? flopMatch[1].trim() : "",
-      summary: summaryMatch ? summaryMatch[1].trim() : "",
+      hype: hypeMatch ? hypeMatch[1].trim() : "No Hype available.",
+      flop: flopMatch ? flopMatch[1].trim() : "No Flop available.",
+      summary: summaryMatch ? summaryMatch[1].trim() : "No summary available.",
       actual_price: currentPrices ? currentPrices[0]?.formattedPrice : null,
     };
 
