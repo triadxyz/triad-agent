@@ -174,7 +174,7 @@ app.post("/ask", async (req: Request, res: Response) => {
 
     const hypeMatch = rawResponse.match(/\*\*Agent Hype:\*\*([\s\S]*?)(?=\n\n|\n$)/);
     const flopMatch = rawResponse.match(/\*\*Agent Flop:\*\*([\s\S]*?)(?=\n\n|\n$)/);
-    const summaryMatch = rawResponse.match(/\*\*Summary:\*\*([\s\S]*?)(?=$)/);
+    const summaryMatch = rawResponse.match(/\*\*Summary:\*\*);
 
     const formattedResponse = {
       hype: hypeMatch ? hypeMatch[1].trim() : "",
