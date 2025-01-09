@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
- "scripts": {
-  "start": "npx tsx agent.ts $ARG1 $ARG2",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+  "scripts": {
+    "start": "npx tsx agent.ts $ARG1 $ARG2",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "@langchain/core": "^0.3.26",
     "@langchain/langgraph": "^0.2.34",
     "@langchain/openai": "^0.3.16",
+    "@pythnetwork/price-service-client": "^1.9.0",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "cors": "^2.8.5",
