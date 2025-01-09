@@ -8,9 +8,9 @@ import cors from "cors";
 import { DateTime } from "luxon";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { PriceServiceConnection } from "@pythnetwork/price-service-client";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { PriceServiceConnection } from '@pythnetwork/price-service-client';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -60,15 +60,13 @@ const workflow = new StateGraph(MessagesAnnotation)
   .addEdge("tools", "agent")
   .addConditionalEdges("agent", shouldContinue);
 
-// Function to format the price
-function formatPrice(priceData: { price: string; expo: number }) {
+function formatPrice(priceData: { price: string, expo: number }) {
   const price = parseInt(priceData.price, 10);
   const decimals = Math.abs(priceData.expo);
   const formattedPrice = (price / Math.pow(10, decimals)).toFixed(decimals);
   return formattedPrice;
 }
 
-// Load prompt dynamically for the specified agent
 function loadPrompt(agent: string, question: string, date: string, market: string | null = null, ticker: string | null = null, currentPrices: any = null) {
   const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt`);
   console.log("Loading Prompt from:", agentFilePath);
@@ -93,7 +91,7 @@ function loadPrompt(agent: string, question: string, date: string, market: strin
   }
 
   if (currentPrices) {
-    const formattedPrice = currentPrices[0]?.formattedPrice || "N/A";
+    const formattedPrice = currentPrices[0]?.formattedPrice || 'N/A';
     agentPromptTemplate = agentPromptTemplate.replace(/{{formattedPrice}}/g, formattedPrice);
   }
 
@@ -172,23 +170,20 @@ app.post("/ask", async (req: Request, res: Response) => {
     });
 
     const rawResponse = finalState.messages[finalState.messages.length - 1].content;
-
     console.log("Raw Response:", rawResponse);
 
-    const responseParts = rawResponse.split("\n\n");
-    const hype = responseParts.find((part) => part.startsWith("1. **Agent Hype:**")) || "";
-    const flop = responseParts.find((part) => part.startsWith("2. **Agent Flop:**")) || "";
-    const summary = responseParts.find((part) => part.startsWith("3. **Summary:**")) || "";
+    const hypeMatch = rawResponse.match(/\*\*Agent Hype:\*\*([\s\S]*?)(?=\n\n|\n$)/);
+    const flopMatch = rawResponse.match(/\*\*Agent Flop:\*\*([\s\S]*?)(?=\n\n|\n$)/);
+    const summaryMatch = rawResponse.match(/\*\*Summary:\*\*([\s\S]*?)(?=\n\n|\n$)/);
 
     const formattedResponse = {
-      hype: hype.replace("1. ", "").trim(),
-      flop: flop.replace("2. ", "").trim(),
-      summary: summary.replace("3. ", "").trim(),
+      hype: hypeMatch ? hypeMatch[1].trim() : "",
+      flop: flopMatch ? flopMatch[1].trim() : "",
+      summary: summaryMatch ? summaryMatch[1].trim() : "",
       actual_price: currentPrices ? currentPrices[0]?.formattedPrice : null,
     };
 
     console.log("Formatted Response:", formattedResponse);
-
     res.json(formattedResponse);
   } catch (error) {
     console.error("Error:", error);
