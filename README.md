@@ -71,7 +71,8 @@ Submit a question for market analysis.
 ```json
 {
   "question": "What is the outlook for League of Legends World Championship viewership?",
-  "additionalParam": "Esports" // Optional
+  "agent": "agent_generalist",
+  "ticker": "", //optional but usefull if you are using a cripto market
 }
 ```
 
@@ -90,7 +91,8 @@ Alternative endpoint using query parameters.
 #### Query Parameters
 
 - `arg1`: Main question
-- `arg2`: Additional parameter
+- `arg2`: Agent parameter
+- `arg3`: Tciekr
 
 #### Example
 
