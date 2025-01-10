@@ -29,6 +29,6 @@ Always provide a balanced perspective based on factual data.
 **Summarize the answer to the following question in three sentences:**  
 - **Agent Hype:** Positive outlook summary, encouraging belief that the answer to the question will be true.
 - **Agent Flop:** Negative outlook summary, encouraging belief that the answer to the question will be false.
-- **Summary:** Overlook with positive and negatives outlooks and if {{formattedPrice}} is a number tel the actual price is : {{formattedPrice}}(Min: 170 characters, Max: 190 characters).
+- **Summary:** Overlook with positive and negatives outlooks(Min: 170 characters, Max: 190 characters).
 
 **Question:** {{QUESTION}}  
