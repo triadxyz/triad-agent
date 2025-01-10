@@ -91,7 +91,7 @@ function loadPrompt(agent: string, question: string, date: string, market: strin
   }
 
   if (currentPrices) {
-    const formattedPrice = currentPrices[1]?.formattedPrice || 'N/A';
+    const formattedPrice = currentPrices[0]?.formattedPrice || 'N/A';
     agentPromptTemplate = agentPromptTemplate.replace(/{{formattedPrice}}/g, formattedPrice);
   }
 
@@ -153,13 +153,13 @@ app.post("/ask", async (req: Request, res: Response) => {
       currentPrices = await connection.getLatestPriceFeeds([marketId]);
       console.log("Current Prices:", currentPrices);
 
-      const priceFeed = currentPrices[1];
+      const priceFeed = currentPrices[0];
       const priceData = priceFeed?.price;
 
       const formattedPrice = formatPrice(priceData);
       console.log("Formatted Price:", formattedPrice);
 
-      currentPrices[1].formattedPrice = formattedPrice;
+      currentPrices[0].formattedPrice = formattedPrice;
     }
 
     const prompt = loadPrompt(agent, question, currentDate, market, ticker, currentPrices);
@@ -184,7 +184,7 @@ app.post("/ask", async (req: Request, res: Response) => {
       hype: hypeMatch ? hypeMatch[1].trim() : "No Hype available.",
       flop: flopMatch ? flopMatch[1].trim() : "No Flop available.",
       summary: summaryMatch ? summaryMatch[1].trim() : "No summary available.",
-      actual_price: currentPrices ? currentPrices[1]?.formattedPrice : null,
+      actual_price: currentPrices ? currentPrices[0]?.formattedPrice : null,
     };
 
     console.log("Formatted Response:", formattedResponse);
