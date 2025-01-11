@@ -60,21 +60,13 @@ const workflow = new StateGraph(MessagesAnnotation)
   .addEdge("tools", "agent")
   .addConditionalEdges("agent", shouldContinue);
 
-// Function to format the price
 function formatPrice(priceData: { price: string, expo: number }) {
-  // Converte o preço para um número
   const price = parseInt(priceData.price, 10);
-
-  // Calcula a posição da vírgula (casas decimais)
   const decimals = Math.abs(priceData.expo);
-
-  // Divide o preço pela potência de 10 que é determinada pelo expo
   const formattedPrice = (price / Math.pow(10, decimals)).toFixed(decimals);
-
   return formattedPrice;
 }
 
-// Load prompt dynamically for the specified agent
 function loadPrompt(agent: string, question: string, date: string, market: string | null = null, ticker: string | null = null, currentPrices: any = null) {
   const agentFilePath = path.join(__dirname, "Crew", `${agent}.txt`);
   console.log("Loading Prompt from:", agentFilePath);
@@ -99,7 +91,6 @@ function loadPrompt(agent: string, question: string, date: string, market: strin
   }
 
   if (currentPrices) {
-    // Substitua o marcador de preços pelo valor formatado da primeira cotação
     const formattedPrice = currentPrices[0]?.formattedPrice || 'N/A';
     agentPromptTemplate = agentPromptTemplate.replace(/{{formattedPrice}}/g, formattedPrice);
   }
@@ -159,42 +150,45 @@ app.post("/ask", async (req: Request, res: Response) => {
 
       console.log("Market ID:", marketId);
 
-      // Get the current prices from Pyth network
       currentPrices = await connection.getLatestPriceFeeds([marketId]);
       console.log("Current Prices:", currentPrices);
 
-      // Process the first price feed
       const priceFeed = currentPrices[0];
       const priceData = priceFeed?.price;
 
-      // Format the price using the expo field
       const formattedPrice = formatPrice(priceData);
       console.log("Formatted Price:", formattedPrice);
 
-      // Add formatted price to currentPrices for response
       currentPrices[0].formattedPrice = formattedPrice;
     }
 
-    // Load the prompt (with or without the market and ticker)
     const prompt = loadPrompt(agent, question, currentDate, market, ticker, currentPrices);
     console.log("Final Prompt Sent to Model:", prompt);
 
-    // Pass the prompt to the agent
     const finalState = await workflow.compile().invoke({
       messages: [new HumanMessage(prompt)],
     });
 
-    console.log(
-      "Response:",
-      finalState.messages[finalState.messages.length - 1].content
-    );
+    const rawResponse = finalState.messages[finalState.messages.length - 1].content;
+    console.log("Raw Response:", rawResponse);
 
-    res.json({
-      response:
-        finalState.messages[finalState.messages.length - 1].content,
-      currentPrices, // Include the formatted price in the response
-    });
+    // Extração de dados com expressões regulares
+    const hypeMatch = rawResponse.match(/\*\*Agent Hype:\*\*([\s\S]*?)(?=\n\n|\n$)/);
+    const flopMatch = rawResponse.match(/\*\*Agent Flop:\*\*([\s\S]*?)(?=\n\n|\n$)/);
+    const summaryMatch = rawResponse.match(/\*\*Summary:\*\*([\s\S]*)/);
 
+    console.log("Extracted Summary Match:", summaryMatch); // Log para depuração
+
+    // Formatação do conteúdo extraído
+    const formattedResponse = {
+      hype: hypeMatch ? hypeMatch[1].trim() : "No Hype available.",
+      flop: flopMatch ? flopMatch[1].trim() : "No Flop available.",
+      summary: summaryMatch ? summaryMatch[1].trim() : "No summary available.",
+      actual_price: currentPrices ? currentPrices[0]?.formattedPrice : null,
+    };
+
+    console.log("Formatted Response:", formattedResponse);
+    res.json(formattedResponse);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send({ error: "Internal Server Error" });
