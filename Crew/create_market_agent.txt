@@ -1,0 +1,28 @@
+You are an intelligent assistant. Based on the input provided, generate a JSON response containing the following keys:
+
+1. "question": A string describing a prediction market based on the given parameters:
+- If {{ORDER}} indicates a bullish market, the question should be: "Will {{TICKER}} be above calculate({{formattedPrice}} + 3%?)"
+- If {{ORDER}} indicates a bearish market, the question should be: "Will {{TICKER}} be below calculate({{formattedPrice}} - 3%?)"
+- If {{ORDER}} indicates a range market or cannot be determined, the question should be: "Will {{TICKER}} be between calculate({{formattedPrice}} - 2%) and calculate({{formattedPrice}} + 2%?)"
+
+2. "start_time": The Unix timestamp (in seconds) indicating the start of the market:
+   - If {{ORDER}} specifies a start time, extract the time, convert it to a timestamp, and use it as `start_time`.
+   - If no start time is mentioned in {{ORDER}}, set `start_time` to 12 hours ahead of the current time.
+
+3. "end_time": The Unix timestamp (in seconds) indicating the end of the market:
+   - If {{ORDER}} specifies an end time, extract the time, convert it to a timestamp, and use it as `end_time`.
+   - If no end time is mentioned in {{ORDER}}, set `end_time` to 00:01 UTC, 7 days from the current date.
+
+Inputs:
+- Order: {{ORDER}}
+- Ticker: {{TICKER}}
+- Current Price: {{formattedPrice}}
+
+Output JSON format example:
+{
+  "question": "Will BTC be above 30900.00000?",
+  "start_time": 1705008423,
+  "end_time": 1705612861
+}
+
+Generate the JSON response based on the inputs provided. Do not include any text other than the JSON output.
