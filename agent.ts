@@ -195,6 +195,67 @@ app.post("/ask", async (req: Request, res: Response) => {
   }
 });
 
+app.post("/create", async (req: Request, res: Response) => {
+  const { order, ticker } = req.body;
+
+  if (!order || !ticker) {
+    console.log("Validation Error: Missing order or ticker");
+    return res.status(400).send({ error: "Order and Ticker are required" });
+  }
+
+  try {
+    const currentDate = DateTime.now().toFormat("dd/MM/yyyy");
+    const agent = "create_market_agent";
+
+    console.log("Order:", order);
+    console.log("Ticker:", ticker);
+    console.log("Date:", currentDate);
+
+    const market = `Crypto.${ticker}/USD`;
+    console.log("Market:", market);
+
+    const marketId = await getMarketId(market);
+    if (!marketId) {
+      throw new Error(`Market ID for ${market} not found`);
+    }
+
+    console.log("Market ID:", marketId);
+
+    const currentPrices = await connection.getLatestPriceFeeds([marketId]);
+    console.log("Current Prices:", currentPrices);
+
+    const priceFeed = currentPrices[0];
+    const priceData = priceFeed?.price;
+
+    const formattedPrice = formatPrice(priceData);
+    console.log("Formatted Price:", formattedPrice);
+
+    currentPrices[0].formattedPrice = formattedPrice;
+
+    const prompt = loadPrompt(agent, "", currentDate, market, ticker, currentPrices)
+      .replace(/{{ORDER}}/g, order)
+      .replace(/{{TICKER}}/g, ticker)
+      .replace(/{{formattedPrice}}/g, formattedPrice);
+
+    console.log("Final Prompt Sent to Model:", prompt);
+
+    const finalState = await workflow.compile().invoke({
+      messages: [new HumanMessage(prompt)],
+    });
+
+    const rawResponse = finalState.messages[finalState.messages.length - 1].content;
+    console.log("Raw Response:", rawResponse);
+
+    res.json({
+      response: rawResponse,
+      formattedPrice,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+});
+
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
