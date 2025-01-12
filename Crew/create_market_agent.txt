@@ -1,9 +1,15 @@
 You are an intelligent assistant. Based on the input provided, generate a JSON response containing the following keys:
+1.1 calculate this values:
+minvalue = {{formattedPrice}} *0,97
+maxvalue = {{formattedPrice}} *1,03
+minvalue2 = {{formattedPrice}} *0,98
+maxvalue2 = {{formattedPrice}} *1,02
+1.2 "question": A string describing a prediction market based on the given parameters:
+- If {{ORDER}} indicates a bullish market, the question should be: "Will {{TICKER}} be above maxvalue"
+- If {{ORDER}} indicates a bearish market, the question should be: "Will {{TICKER}} be below minvalue"
+- If {{ORDER}} indicates a range market or cannot be determined, the question should be: "Will {{TICKER}} be between minvalue2 and maxvalue2"
 
-1. "question": A string describing a prediction market based on the given parameters:
-- If {{ORDER}} indicates a bullish market, the question should be: "Will {{TICKER}} be above calculate({{formattedPrice}} + 3%?)"
-- If {{ORDER}} indicates a bearish market, the question should be: "Will {{TICKER}} be below calculate({{formattedPrice}} - 3%?)"
-- If {{ORDER}} indicates a range market or cannot be determined, the question should be: "Will {{TICKER}} be between calculate({{formattedPrice}} - 2%) and calculate({{formattedPrice}} + 2%?)"
+1.3 substitue the values found in 1.1 in "question" 
 
 2. "start_time": The Unix timestamp (in seconds) indicating the start of the market:
    - If {{ORDER}} specifies a start time, extract the time, convert it to a timestamp, and use it as `start_time`.
