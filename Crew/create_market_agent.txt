@@ -26,6 +26,7 @@ Inputs:
 - Order: {{ORDER}}
 - Ticker: {{TICKER}}
 - Current Price: {{formattedPrice}}
+- Current Time: {{DATE}}
 
 Output JSON format example:
 {
