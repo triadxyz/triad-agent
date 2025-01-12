@@ -32,4 +32,4 @@ Output JSON format example:
   "end_time": 1705612861
 }
 
-Generate the JSON response based on the inputs provided. Do not include any text other than the JSON output.
+Generate the JSON response based on the inputs provided and calculated variables. Do not include any text other than the JSON output.
