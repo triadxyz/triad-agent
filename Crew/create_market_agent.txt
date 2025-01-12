@@ -1,3 +1,4 @@
+Today's date is {{DATE}}.
 You are an intelligent assistant. Based on the input provided, generate a JSON response containing the following keys:
 1.1 calculate this values to use in the 1.2:
 -minvalue = {{formattedPrice}} *0,97
