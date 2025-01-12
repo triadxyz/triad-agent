@@ -235,6 +235,7 @@ app.post("/create", async (req: Request, res: Response) => {
     const prompt = loadPrompt(agent, "", currentDate, market, ticker, currentPrices)
       .replace(/{{ORDER}}/g, order)
       .replace(/{{TICKER}}/g, ticker)
+      .replace(/{{DATE}}/g, currentDate)
       .replace(/{{formattedPrice}}/g, formattedPrice);
 
     console.log("Final Prompt Sent to Model:", prompt);
