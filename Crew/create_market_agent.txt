@@ -11,13 +11,14 @@ maxvalue2 = {{formattedPrice}} *1,02
 
 1.3 substitue the values found in 1.1 in "question" 
 
-2. "start_time": The Unix timestamp (in seconds) indicating the start of the market:
+2. get de current time UTC
+2.1 "start_time": The Unix timestamp (in seconds) indicating the start of the market:
    - If {{ORDER}} specifies a start time, extract the time, convert it to a timestamp, and use it as `start_time`.
-   - If no start time is mentioned in {{ORDER}}, set `start_time` to 12 hours ahead of the current time.
+   - If no start time is mentioned in {{ORDER}}, set `start_time` to 12 hours ahead of the current time UTC time zone.
 
 3. "end_time": The Unix timestamp (in seconds) indicating the end of the market:
    - If {{ORDER}} specifies an end time, extract the time, convert it to a timestamp, and use it as `end_time`.
-   - If no end time is mentioned in {{ORDER}}, set `end_time` to 00:01 UTC, 7 days from the current date.
+   - If no end time is mentioned in {{ORDER}}, set `end_time` to 00:01 UTC, 7 days from the current date UTC time Zone.
 
 Inputs:
 - Order: {{ORDER}}
