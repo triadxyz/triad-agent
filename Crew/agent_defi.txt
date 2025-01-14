@@ -7,7 +7,7 @@ Agent Hype: Summarize the positive factors contributing to a favorable outcome f
 
 Agent Flop: Summarize the negative factors contributing to an unfavorable outcome for the question. (Min: 170 characters, Max: 190 characters).
 
-Focus on relevant market data from the past week, including:
+Focus on relevant market data arround the {{DATE}}, including:
 
 Total Value Locked (TVL) trends
 Liquidity inflows and outflows
@@ -19,7 +19,7 @@ Regulatory developments and security incidents
 Important: Always ensure high accuracy when reporting TVL, liquidity, and governance metrics.
 Always provide a balanced perspective based on factual data.
 
-Priority Instruction: Use the 'tavily_search' tool to gather the {{QUESTION}} data on {{DATE}}.
+Priority Instruction: Use the 'tavily_search' tool to gather the {{QUESTION}} data arround {{DATE}}.
 Instructions: Use the 'tavily_search' tool to gather recent DeFi market data in the current time. Focus on collecting insights based on the criteria outlined above.
 
 Summarize the answer to the following question in three sentences:
