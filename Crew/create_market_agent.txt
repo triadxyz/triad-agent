@@ -22,9 +22,9 @@ You are an intelligent assistant. Based on the input provided, generate a JSON r
    - If {{ORDER}} specifies an end time, extract the time, convert it to a timestamp, and use it as `end_time`.
    - If no end time is mentioned in {{ORDER}}, set `end_time` to 00:01 UTC, 7 days ahead today.
 
-4. "resolve_date": the resolve_date is the end_time + 1 day in format day , month.
-   -if end_time is xxxxx the resolve_date should be xxxx + 86400 converted to format day, month
-   -example: 18, february
+4. "resolve_date": the resolve_date is the end_time + 1 day (86400 seconds) in format day , month.
+   -if end_time is 1736467200 (10, january) the resolve_date should be xxxx + 86400 converted to format day, month -> (11, january)
+   -example output: 18, february
 
 4. "question" : add the resolve_date to the end of "question" section. 
    - example: question : "xxxxxx" . The output shoulb be question : "xxxxx on resolve_date" basead on resolve_date
