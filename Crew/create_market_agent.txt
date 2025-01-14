@@ -27,7 +27,8 @@ You are an intelligent assistant. Based on the input provided, generate a JSON r
    -example output: 18, february
 
 4. "question" : add the resolve_date to the end of "question" section. 
-   - example: question : "xxxxxx" . The output shoulb be question : "xxxxx on resolve_date" basead on resolve_date
+   - example: question : "xxxxxx" . The output should be question : "xxxxx on resolve_date" basead on resolve_date
+   - use resolve_date NOT the end_date
 
 
 Inputs:
