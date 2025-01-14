@@ -16,11 +16,11 @@ You are an intelligent assistant. Based on the input provided, generate a JSON r
 2.1 Today's date is {{DATE}}.
 2.2 "start_time": The Unix timestamp (in seconds) indicating the start of the market:
    - If {{ORDER}} specifies a start time, extract the time, convert it to a timestamp, and use it as `start_time`.
-   - If no start time is mentioned in {{ORDER}}, set `start_time` to 23:59 UTC today.
+   - If no start time is mentioned in {{ORDER}}, set `start_time` to today 23:59 UTC.
 
 3. "end_time": The Unix timestamp (in seconds) indicating the end of the market:
    - If {{ORDER}} specifies an end time, extract the time, convert it to a timestamp, and use it as `end_time`.
-   - If no end time is mentioned in {{ORDER}}, set `end_time` to 00:01 UTC, 7 days ahead today.
+   - If no end time is mentioned in {{ORDER}}, set `end_time` to 00:00 UTC, 7 days ahead today.
 
 4. "resolve_date": The date indicating when the market sould be resolved
     -If {{ORDER}} specifies an end time, extract the time, add 1 day, and use it as `resolve_date`
