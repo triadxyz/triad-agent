@@ -22,7 +22,7 @@ You are an intelligent assistant. Based on the input provided, generate a JSON r
    - If {{ORDER}} specifies an end time, extract the time, convert it to a timestamp, and use it as `end_time`.
    - If no end time is mentioned in {{ORDER}}, set `end_time` to 00:01 UTC, 7 days ahead today.
 4. "question" : add the end_time date + 1 day to the end of "question" section. 
-   - example: question : "xxxxxx" . The output shoulb be question : "xxxxx on 21 january" basead on end_time timestamp + 1 day
+   - example: question : "xxxxxx" . The output shoulb be question : "xxxxx on day , month" basead on (end_time timestamp + 1 day)
 Inputs:
 - Order: {{ORDER}}
 - Ticker: {{TICKER}}
