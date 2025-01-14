@@ -29,6 +29,7 @@ You are an intelligent assistant. Based on the input provided, generate a JSON r
 4. "question" : add the resolve_date to the end of "question" section. 
    - example: question : "xxxxxx" . The output should be question : "xxxxx on resolve_date" basead on resolve_date
    - use resolve_date NOT the end_date
+   - remember that resolve_date is the end_date + 1 day
 
 
 Inputs:
