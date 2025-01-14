@@ -20,7 +20,7 @@ You are an intelligent assistant. Based on the input provided, generate a JSON r
 
 3. "end_time": The Unix timestamp (in seconds) indicating the end of the market:
    - If no end time is mentioned in {{ORDER}}, set `end_time` to {{DATE}} + 7 days, 00:00 UTC
-   -convert `start_time` to timestamp
+   -convert `end_time` to timestamp
 
 4. "resolve_date": The date indicating when the market sould be resolved
     -If {{ORDER}} specifies an end time, extract the time, add 1 day, and use it as `resolve_date`
@@ -38,8 +38,8 @@ Inputs:
 Output JSON format example:
 {
   "question": "Will BTC be above 30900.00? on 10, february",
-  "start_time": 1705008423,
-  "end_time": 1705612861,
+  "start_time": 22222222,
+  "end_time": 8888888,
   "resolve_date": "10, february"
 }
 
