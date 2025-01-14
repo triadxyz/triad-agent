@@ -41,7 +41,7 @@ Output JSON format example:
   "question": "Will BTC be above 30900.00? on 10, february",
   "start_time": 1705008423,
   "end_time": 1705612861,
-  "resolve_date": 170589120
+  "resolve_date": "10, february"
 }
 
 Generate the JSON response based on the inputs provided and calculated variables. Do not include any text other than the JSON output.
