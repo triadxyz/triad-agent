@@ -31,7 +31,7 @@ Inputs:
 
 Output JSON format example:
 {
-  "question": "Will BTC be above 30900.00000? on 21 january?",
+  "question": "Will BTC be above 30900.00000? on day month?",
   "start_time": 1705008423,
   "end_time": 1705612861
 }
