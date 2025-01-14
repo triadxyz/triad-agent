@@ -28,6 +28,8 @@ You are an intelligent assistant. Based on the input provided, generate a JSON r
 
 4. "question" : add the resolve_date to the end of "question" section. 
    - example: question : "xxxxxx" . The output shoulb be question : "xxxxx on day xxx , month xxx" basead on resolve_date
+
+
 Inputs:
 - Order: {{ORDER}}
 - Ticker: {{TICKER}}
@@ -36,9 +38,10 @@ Inputs:
 
 Output JSON format example:
 {
-  "question": "Will BTC be above 30900.00000? on 10, february",
+  "question": "Will BTC be above 30900.00? on 10, february",
   "start_time": 1705008423,
-  "end_time": 1705612861
+  "end_time": 1705612861,
+  "resolve_date": 170589120
 }
 
 Generate the JSON response based on the inputs provided and calculated variables. Do not include any text other than the JSON output.
