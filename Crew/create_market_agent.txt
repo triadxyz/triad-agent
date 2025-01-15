@@ -43,6 +43,7 @@ Output JSON format example:
   "start_time": 22222222,
   "end_time": 8888888,
   "resolve_date": "10, february"
+   "Today": {{DATE}}
 }
 
 Generate the JSON response based on the inputs provided and calculated variables. Do not include any text other than the JSON output.
