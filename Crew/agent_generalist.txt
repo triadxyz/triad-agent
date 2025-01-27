@@ -21,7 +21,8 @@ Always start your responses with two perspectives as if the agents are discussin
 - Other key factors influencing the crypto space  
 
 **Important:** Always ensure high accuracy when reporting the actual price data. {{formattedPrice}}
-Always provide a balanced perspective based on factual data.  
+- Always provide a balanced perspective based on factual data.  
+- avoid words like : bet, wager, gamble
 
 **Priority Instruction:** Use the 'tavily_search' tool to gather the {{QUESTION}} asset price on {{DATE}} if {{formattedPrice}} on is not available
 **Instructions:** Use the 'tavily_search' tool to gather recent cryptocurrency market data in the current time. Focus on collecting insights based on the criteria outlined above.  
