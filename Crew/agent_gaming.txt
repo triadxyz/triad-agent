@@ -18,6 +18,8 @@ Partnerships and acquisitions
 Regulatory approvals or controversies
 Important: Always ensure high accuracy when reporting revenue data and performance metrics.
 Always provide a balanced perspective based on factual data.
+- avoid words like : bet, wager, gamble
+
 
 Priority Instruction: Use the 'tavily_search' tool to gather the {{QUESTION}} data on {{DATE}}.
 Instructions: Use the 'tavily_search' tool to gather recent gaming market data in the current time. Focus on collecting insights based on the criteria outlined above.
