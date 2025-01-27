@@ -18,6 +18,8 @@ Sponsorships and partnerships
 Regulatory approvals and updates
 Important: Always ensure high accuracy when reporting performance metrics and odds data.
 Always provide a balanced perspective based on factual data.
+- avoid words like : bet, wager, gamble
+
 
 Priority Instruction: Use the 'tavily_search' tool to gather the {{QUESTION}} data arround {{DATE}} in the year of 2025.
 Instructions: Use the 'tavily_search' tool to gather recent sports market data in the {{DATE}}. Focus on collecting insights based on the criteria outlined above.
